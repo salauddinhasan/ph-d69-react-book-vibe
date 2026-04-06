@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router";
 
 const Navbar = () => {
-  
   const activeLink =
     "text-[#7E3AF2] border-2 border-[#7E3AF2] px-4 py-2 rounded-lg font-bold transition-all";
   const normalLink =
@@ -19,7 +18,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Links */}
-        <nav className="hidden md:block">
+        <nav className="hidden lg:block">
           <ul className="flex gap-4 text-lg font-medium items-center">
             <li>
               <NavLink
@@ -55,7 +54,7 @@ const Navbar = () => {
         </nav>
 
         {/* Buttons Section */}
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2 ms:gap-3 items-center">
           <button className="px-5 py-2 rounded-lg font-semibold bg-[#7E3AF2] text-white hover:bg-[#6c2bd9] transition active:scale-95">
             Sign In
           </button>
