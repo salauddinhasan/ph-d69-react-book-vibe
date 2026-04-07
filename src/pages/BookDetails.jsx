@@ -1,13 +1,22 @@
 import React, { use } from "react";
 import { useParams } from "react-router";
+import { addToStoredReadList, addToStoredWishList } from "../utils/addToDb";
 
 const getDataPromise = (async () => {
   const res = await fetch("/data.json");
   return res.json();
 })();
- 
+
 const BookDetails = () => {
   const { bookId } = useParams();
+
+  const handleMarkAsRead = (id) => {
+    addToStoredReadList(id);
+  }
+
+  const handleWishlist = (id) => {
+        addToStoredWishList(id);
+    }
 
   const data = use(getDataPromise);
 
@@ -55,10 +64,10 @@ const BookDetails = () => {
           </div>
 
           <div className="flex gap-4 pt-3">
-            <button className="px-10 py-4 border border-[#1313134D] rounded-lg font-bold hover:bg-gray-100 transition">
+            <button onClick={() => handleMarkAsRead(parseInt(bookId))} className="px-10 py-4 border border-[#1313134D] rounded-lg font-bold hover:bg-gray-100 transition">
               Read
             </button>
-            <button className="px-10 py-4 bg-[#50B1C9] text-white rounded-lg font-bold hover:bg-[#3e9cb4] transition">
+            <button onClick={() => handleWishlist(parseInt(bookId))} className="px-10 py-4 bg-[#50B1C9] text-white rounded-lg font-bold hover:bg-[#3e9cb4] transition">
               Wishlist
             </button>
           </div>
