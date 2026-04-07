@@ -5,9 +5,11 @@ import ListedBooks from "./pages/ListedBooks";
 import PagesToRead from "./pages/PagesToRead";
 import Home from "./pages/Home";
 import BookDetails from "./pages/BookDetails";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
+    <>
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
@@ -26,6 +28,9 @@ const App = () => {
 
       
     </Routes>
+
+    <ToastContainer/>
+    </>
   );
 };
 

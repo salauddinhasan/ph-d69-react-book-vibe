@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 // Local Storage থেকে ডাটা চেক করা
 const getStoredReadList = () => {
   const storedListStr = localStorage.getItem("read-list");
@@ -11,12 +13,12 @@ const getStoredReadList = () => {
 const addToStoredReadList = (id) => {
   const storedList = getStoredReadList();
   if (storedList.includes(id)) {
-    alert("This book is already in your Read List!");
+    toast.warn("This book is already in your Read List!");
   } else {
     storedList.push(id);
     const storedListStr = JSON.stringify(storedList);
     localStorage.setItem("read-list", storedListStr);
-    alert("Book added to Read List!");
+    toast.success("Book added to Read List!");
   }
 };
 
@@ -35,13 +37,13 @@ const addToStoredWishList = (id) => {
   const storedReadList = getStoredReadList(); // Read List টাও চেক করছি
 
   if (storedReadList.includes(id)) {
-    alert("You have already read this book! No need to wishlist.");
+    toast.error("Already Read! Can't add to wishlist.");
   } else if (storedWishList.includes(id)) {
-    alert("This book is already in your wishlist!");
+    toast.info("This book is already in your wishlist.");
   } else {
     storedWishList.push(id);
     localStorage.setItem("wish-list", JSON.stringify(storedWishList));
-    alert("Added to wishlist!");
+    toast.success("Added to Wishlist!");
   }
 };
 
