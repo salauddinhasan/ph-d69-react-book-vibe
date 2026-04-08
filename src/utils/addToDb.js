@@ -47,9 +47,28 @@ const addToStoredWishList = (id) => {
   }
 };
 
+// read-list থেকে ডিলিট করা
+const removeFromStoredReadList = (id) => {
+    const storedList = getStoredReadList();
+    const remaining = storedList.filter(bookId => bookId !== id);
+    localStorage.setItem('read-list', JSON.stringify(remaining));
+}
+
+const removeFromStoredWishList = (id) => {
+    const storedList = getStoredWishList();
+    const remaining = storedList.filter(bookId => bookId !== id);
+    localStorage.setItem('wish-list', JSON.stringify(remaining));
+}
+
+
 export {
   addToStoredReadList,
   getStoredReadList,
   addToStoredWishList,
   getStoredWishList,
+  removeFromStoredReadList,
+  removeFromStoredWishList
 };
+
+
+

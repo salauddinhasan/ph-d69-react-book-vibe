@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getStoredReadList, getStoredWishList } from "../utils/addToDb";
+import { getStoredReadList, getStoredWishList, removeFromStoredReadList , removeFromStoredWishList} from "../utils/addToDb";
 import { CiLocationOn } from "react-icons/ci";
 import { HiOutlineUser } from "react-icons/hi2";
 import { FaFileInvoice } from "react-icons/fa";
-import { Link } from "react-router"; // Link ইমপোর্ট করতে ভুলবেন না
+import { Link } from "react-router";  
+import { AiTwotoneDelete } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 const ListedBooks = () => {
   const [readList, setReadList] = useState([]);
@@ -41,12 +43,65 @@ const ListedBooks = () => {
     }
   };
 
+  const handleSort = (sortBy) => {
+    let sortedBooks = [...displayBooks];
+    if (sortBy === "rating") {
+      sortedBooks.sort((a, b) => b.rating - a.rating);
+    } else if (sortBy === "pages") {
+      sortedBooks.sort((a, b) => b.totalPages - a.totalPages);
+    } else if (sortBy === "year") {
+      sortedBooks.sort((a, b) => b.yearOfPublishing - a.yearOfPublishing);
+    }
+
+    setDisplayBooks(sortedBooks);
+  };
+
+const handleDelete = (id) => {
+    // ১. দুই লিস্ট থেকেই ডিলিট করার ফাংশন কল করছি (নিশ্চিত হওয়ার জন্য)
+    removeFromStoredReadList(id);
+    removeFromStoredWishList(id);
+
+    // ২. বর্তমান স্ক্রিন (UI) থেকে ফিল্টার করে সরিয়ে দিচ্ছি
+    const remainingBooks = displayBooks.filter((book) => book.bookId !== id);
+    setDisplayBooks(remainingBooks);
+
+    // ৩. টোস্ট মেসেজ
+    toast.error("Book removed from list!");
+};
+  
+
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-8 mb-20">
       {/* Title Section */}
       <h2 className="text-3xl font-bold text-center bg-[#1313130D] py-8 rounded-2xl my-8 text-[#131313]">
         Listed Books
       </h2>
+
+      <div className="flex justify-center my-8">
+        <div className="dropdown dropdown-bottom">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn m-1 bg-[#23BE0A] text-white font-bold px-8"
+          >
+            Sort By
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li>
+              <a onClick={() => handleSort("rating")}>Rating</a>
+            </li>
+            <li>
+              <a onClick={() => handleSort("pages")}>Number of Pages</a>
+            </li>
+            <li>
+              <a onClick={() => handleSort("year")}>Publishing Year</a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       {/* Tabs / Filter Buttons */}
       <div className="flex gap-4 mb-8">
@@ -142,6 +197,13 @@ const ListedBooks = () => {
                     View Details
                   </button>
                 </Link>
+
+                <button
+                  onClick={() => handleDelete(book.bookId)}
+                  className="px-3 py-2 rounded-full font-medium     hover:bg-red-100 transition-colors"
+                >
+                  <AiTwotoneDelete />
+                </button>
               </div>
             </div>
           </div>
